@@ -1,30 +1,19 @@
 ﻿using namespace std;
 
-#include "Engine/Window.h"
-#include "Engine/Graphics.h"
-#include "Engine/TimeKeep.h"
-
 #define PI 3.14159
 
-typedef struct {
+typedef struct mat4x4 {
     float m[4][4] = { 0 };
 } mat4x4;
 
 mat4x4 matProj;
 
-mesh MechCube;
+unsigned int fElapsedTime = 0;
+float fTheta = 0.0f;
 
-void MultiplyMatrixVector(vertex &i, vertex &o, mat4x4 &m) {
-	o.x = i.x * m.m[0][0] + i.y * m.m[1][0] + i.z * m.m[2][0] + m.m[3][0];
-	o.y = i.x * m.m[0][1] + i.y * m.m[1][1] + i.z * m.m[2][1] + m.m[3][1];
-	o.z = i.x * m.m[0][2] + i.y * m.m[1][2] + i.z * m.m[2][2] + m.m[3][2];
-	float w = i.x * m.m[0][3] + i.y * m.m[1][3] + i.z * m.m[2][3] + m.m[3][3];
-
-	if (w != 0.0f)
-	{
-		o.x /= w; o.y /= w; o.z /= w;
-	}
-}
+#include "Engine/Window.h"
+#include "Engine/Graphics.h"
+#include "Engine/TimeKeep.h"
 
 
 void Init() {
@@ -88,32 +77,14 @@ int main(void) {
         // Process standard OS messages
         running = ProcessWindowMessages();
 
-        ClearBuffer();
+        FillBuffer(0); // fills the color the the window to black
+
+        UpdateDisplay();
+
         // Command Windows to instantly update the viewport display area
         InvalidateRect(hwnd, NULL, FALSE);
 
-        // Draw Triangles
-
-        for (auto tri : MechCube.Triangle) {
-            triangle TriProjected;
-            MultiplyMatrixVector(tri.p[0], TriProjected.p[0], matProj);
-            MultiplyMatrixVector(tri.p[1], TriProjected.p[1], matProj);
-            MultiplyMatrixVector(tri.p[2], TriProjected.p[2], matProj);
-
-            // Scale into view
-            TriProjected.p[0].x += 1.0f; TriProjected.p[0].y += 1.0;
-            TriProjected.p[1].x += 1.0f; TriProjected.p[1].y += 1.0;
-            TriProjected.p[2].x += 1.0f; TriProjected.p[2].y += 1.0;
-
-            TriProjected.p[0].x *= 0.5f * (float)SCREEN_WIDTH; TriProjected.p[0].y *= 0.5f * (float)SCREEN_HEIGHT;
-            TriProjected.p[1].x *= 0.5f * (float)SCREEN_WIDTH; TriProjected.p[1].y *= 0.5f * (float)SCREEN_HEIGHT;
-            TriProjected.p[2].x *= 0.5f * (float)SCREEN_WIDTH; TriProjected.p[2].y *= 0.5f * (float)SCREEN_HEIGHT;
-
-            DrawTriangle(TriProjected.p[0].x, TriProjected.p[0].y,
-                TriProjected.p[1].x, TriProjected.p[1].y,
-                TriProjected.p[2].x, TriProjected.p[2].y,
-                0x00FFFFFF);
-        }
+        fElapsedTime += 1; // Increments every frame to keep count of up time
 
         // Force the loop to pause if it's moving too fast
         cap_frame_rate();
