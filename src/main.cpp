@@ -18,7 +18,8 @@ float fTheta = 0.0f;
 
 void Init() {
 
-    MechCube.Triangle = {
+    /*
+    MeshCube.Triangle = {
 
 		// SOUTH
 		{ 0.0f, 0.0f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 0.0f },
@@ -43,7 +44,21 @@ void Init() {
 		// BOTTOM                                                    
 		{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f },
 		{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f, 0.0f },
+
+		};
+    MechCube.Triangle = {
+
+		// SOUTH
+		{ 0.0f, 0.0f, 0.0f,    1.0f, 0.0f, 0.0f,    1.0f, 0.0f, 1.0f },
+        { 0.0f, 0.0f, 0.0f,    0.0f, 0.0f, 1.0f,    1.0f, 0.0f, 1.0f },
+        { 0.0f, 0.0f, 0.0f,    0.5f, 1.0f, 0.5f,    1.0f, 0.0f, 0.0f },
+        { 1.0f, 0.0f, 0.0f,    0.5f, 1.0f, 0.5f,    1.0f, 0.0f, 1.0f },
+        { 1.0f, 0.0f, 1.0f,    0.5f, 1.0f, 0.5f,    0.0f, 0.0f, 1.0f },
+        { 0.0f, 0.0f, 1.0f,    0.5f, 1.0f, 0.5f,    0.0f, 0.0f, 0.0f }
     };
+    */
+
+    MeshCube.LoadFromObjectFile("../Assets/VideoShip.obj");
 
     float fNear = 0.1f;
     float fFar = 1000.0f;
